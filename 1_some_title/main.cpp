@@ -80,9 +80,11 @@ int main(){
     // int var;
     // *var = 0; -- main.cpp: In function ‘int main()’:main.cpp:81:6: error: invalid type argument of unary ‘*’ (have ‘int’)
 
-    // int var;
-    // var = "some_string"; -- main.cpp: In function ‘int main()’:main.cpp:84:11: error: invalid conversion from ‘const char*’ to ‘int’ [-fpermissive]
+    // int *var;
+    // *var = "some_string"; // -- main.cpp: In function ‘int main()’:main.cpp:84:11: error: invalid conversion from ‘const char*’ to ‘int’ [-fpermissive]
 
+    // int* ptr;
+    // ptr("some_string"); -- main.cpp:87:22: error: ‘ptr’ cannot be used as a function
 
 
     bool local_bool = true;
