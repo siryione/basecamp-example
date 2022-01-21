@@ -7,10 +7,10 @@ int main(){
     // DECLARING POINTERS
     // declare and assign 
 
-    int *ptr_int_to_var;
-    char *ptr_char_to_const;
-    const float *ptr_float_const_to_var;
-    const bool *ptr_bool_const_to_const;
+    int * ptr_int_to_var;
+    const char * ptr_char_to_const;
+    // float * const ptr_float_const_to_var;        -- const pointers must be initialized
+    // const bool * const ptr_bool_const_to_const;  -- const pointers must be initialized
 
     int var_int = 1;
     float var_float = 0.2f;
@@ -18,25 +18,29 @@ int main(){
     const bool var_const_bool = true;
 
     ptr_int_to_var = &var_int;
-    // ptr_char_to_const = &var_const_char; -- error: invalid conversion from ‘const char*’ to ‘char*’ [-fpermissive]
-    ptr_float_const_to_var = &var_float;
-    ptr_bool_const_to_const = &var_const_bool;
+    ptr_char_to_const = &var_const_char;
 
-    // change pointer's value
+    float * const ptr_float_const_to_var = &var_float;
+    const bool * const ptr_bool_const_to_const = &var_const_bool;
 
-    *ptr_int_to_var = 10;
-    // *ptr_char_to_const = 'B'; -- Segmentation fault
-    // *ptr_float_const_to_var = 0.1f; -- error: assignment of read-only location ‘* ptr_float_const_to_var’
-    // *ptr_bool_const_to_const = false; -- error: assignment of read-only location ‘* ptr_bool_const_to_const’
+    // change pointers' values
+    float float_modifier = .15f;
+    int int_modifier = 10;
+    bool bool_modifier = false;
 
-    // change var's value
-
-    var_int = 100;
-    var_float = 100.f;
-    // var_const_char = 'a'; -- error: assignment of read-only variable ‘var_const_char’
-    // var_const_bool = true; -- error: assignment of read-only variable ‘var_const_bool’
+    ptr_int_to_var = (int *)&float_modifier;
+    // ptr_float_const_to_var = (float *)&int_modifier; -- assignment of read-only variable
+    ptr_char_to_const = (char *)&int_modifier;
+    // ptr_bool_const_to_const = &bool_modifier; -- assignment of read-only variable
     
+    
+    // change values pointed to by the pointers
 
+    * ptr_int_to_var = 10;
+    * ptr_float_const_to_var = 0.1f; 
+    // * ptr_char_to_const = 'B'; -- assignment of read-only location
+    // * ptr_bool_const_to_const = false; -- assignment of read-only location ‘* ptr_bool_const_to_const’
+  
 
     // ARRAYS AND POINTER ARITHMETIC
     // create a C-style array of some type and fill it with values
