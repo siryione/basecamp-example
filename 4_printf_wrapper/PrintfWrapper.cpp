@@ -19,12 +19,8 @@ void PrintfWrapper::print(const char *str){
 
 void PrintfWrapper::write(const char *str){
     int text_length = 0;
-    int index = 0;
-    while(str[index]){
-        index++;
-    }
-    if(index != 0){
-        text_length = index;
+    while(str[text_length]){
+        text_length++;
     }
     if(text_length > free_space){
         char *container = new char[(int)(text_length*1.2)];        ;
@@ -39,7 +35,8 @@ void PrintfWrapper::write(const char *str){
         }
         delete[] container;
     }
-    if(text_length <= free_space){
+
+    if(text_length != 0 && text_length <= free_space){
         for(int i = 0; i < text_length; i++){
             *(buff_ptr+offset+i) = str[i];
             free_space--;
