@@ -60,7 +60,8 @@ void PrintfWrapper::flush(){
 }
 
 void PrintfWrapper::free_buff(){
-    offset = 0;
     delete[] buff_ptr;
     buff_ptr = new char[BUFF_SIZE];
+    offset = 0;
+    free_space = BUFF_SIZE;
 }
