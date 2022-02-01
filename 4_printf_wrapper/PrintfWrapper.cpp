@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <ctime>
+#include <cstring>
 #include "PrintfWrapper.hpp"
 
 
@@ -18,10 +19,7 @@ void PrintfWrapper::print(const char *str){
 // Private
 
 void PrintfWrapper::write(const char *str){
-    int text_length = 0;
-    while(str[text_length]){
-        text_length++;
-    }
+    int text_length = std::strlen(str);
     if(text_length > free_space){
         char *container = new char[(int)(text_length*1.2)];        ;
         for(int i = 0; i < text_length; i++){
