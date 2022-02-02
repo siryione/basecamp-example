@@ -23,8 +23,9 @@ void thread1_function(){
             mtx.unlock();
             continue;
         }
-        // file.read(buffer.data, N);
+        file.read(buffer.data, N);
         buffer.is_full = true;
+
         mtx.unlock();
     }
     std::cout << "[log]: thread1 function exit" << std::endl;
@@ -41,7 +42,9 @@ void thread2_function(){
         if(buffer.is_full){
             for(auto &c: buffer.data){
                 std::cout << c;
-            }
+            } 
+            std::cout << std::endl;
+            buffer.is_full = false;
         }
         mtx.unlock();
     }
