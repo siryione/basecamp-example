@@ -3,19 +3,30 @@
 #include <fstream>
 #include <string>
 #include <mutex>
-#define N 10
+#include <csignal>
 
-struct Buffer
-{
-    char data[N];
+const int kBufferSize = 10;
+
+struct Buffer {
+    char data[kBufferSize];
     bool is_full;
 };
 
+std::thread first;
+std::thread second;
 std::mutex mtx;
 Buffer buffer;
 std::ifstream file("textfile.txt");
 
-void thread1_function(){
+void SignalHandler(int signum){
+    std::cout << "Interrupt signal (" << signum << ") received.\n";
+    first.join();
+    second.join();
+    std::cout << "Program gracefully finished!";
+    exit(signum);  
+}
+
+void FirstThreadFunction(){
     std::cout << "[log]: thread1 function entrance" << std::endl;
     while(!file.eof()){
         mtx.lock();
@@ -23,7 +34,7 @@ void thread1_function(){
             mtx.unlock();
             continue;
         }
-        file.read(buffer.data, N);
+        file.read(buffer.data, kBufferSize);
         buffer.is_full = true;
 
         mtx.unlock();
@@ -31,7 +42,7 @@ void thread1_function(){
     std::cout << "[log]: thread1 function exit" << std::endl;
 }
 
-void thread2_function(){
+void SecondThreadFunction(){
     std::cout << "[log]: thread2 function entrance" << std::endl;
     bool last_buff_read = false;
     while(!last_buff_read){
@@ -53,14 +64,13 @@ void thread2_function(){
 }
 
 int main(){
-    if(file.is_open()){
-        std::thread first(thread1_function);
-        std::thread second(thread2_function);
-        first.join();
-        second.join();
-    }
-    else{
+    if(!file.is_open()){
         return 1;
     }
+    first = std::thread(FirstThreadFunction);
+    second = std::thread(SecondThreadFunction);
+    std::signal(SIGINT, SignalHandler);
+    first.join();
+    second.join();
     return 0;
 }
